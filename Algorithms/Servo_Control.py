@@ -5,7 +5,10 @@ import time
 import sys
 
 # ===========================================================================
-# Example Code
+# Modification of Adafruit Script for Servo motor control.
+# Original can be found at: git clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code.git
+# under Adafruit-Raspberry-Pi-Python-Code/Adafruit_PWM_Servo_Driver
+# Other files from that diretory are required as a dependency for servo control.
 # ===========================================================================
 
 # Initialise the PWM device using the default address
@@ -26,11 +29,11 @@ servo_t_max = 550
 servoMax = 600  # Max pulse length out of 4096
 
 # Positions for scan
-position = 300
 bot = True
 mid = False
 top = False
 
+# This part of the script sets the PWM
 def setServoPulse(channel, pulse):
   pulseLength = 1000000                   # 1,000,000 us per second
   pulseLength /= 50                       # 60 Hz
@@ -41,7 +44,8 @@ def setServoPulse(channel, pulse):
   pulse /= pulseLength
   pwm.setPWM(channel, 0, pulse)
 
-
+# This is the manual control algorithm, the w, a, s, d keys are used for control and go to the maximum position
+# in the x or y axis.
 def key_control():
   while(True):
     # Keyboard Control
@@ -61,14 +65,14 @@ def key_control():
     elif guessInLower == 'q':
       return
 
+# This is the scan algorithm, it moves the servos from the bottom right to the top left positions
+# in 3 horizontal lines, bot, mid, and top. It prints when a phase has finished on the screen.
 def scan(bot, mid, top):
   # Start at bottom right and scan horizontal lines
   while(True):
     if bot == True:
       pwm.setPWM(1, 0, servo_t_min)
       time.sleep(1)
-      #pwm.setPWM(0, 0, servo1_4)
-      #time.sleep(1)
       pwm.setPWM(0, 0, servo3_4)
       time.sleep(1)
       mid = True
@@ -79,8 +83,6 @@ def scan(bot, mid, top):
       time.sleep(1)
       pwm.setPWM(0, 0, servo1_4)
       time.sleep(1)
-      #pwm.setPWM(0, 0, servo3_4)
-      #time.sleep(1)
       top = True
       mid = False
       print "mid is done"
@@ -96,6 +98,10 @@ def scan(bot, mid, top):
       print "top is done"
       return
 
+# This is the main interface of the program:
+# s - executes the scan algorithm
+# m - switches into manual control
+# q - exits the program
 while (True):
   #Set servos to neutral position
   pwm.setPWM(1, 0, servo_t_min)
