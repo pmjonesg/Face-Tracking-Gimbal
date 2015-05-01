@@ -1,9 +1,12 @@
+# This script performs face recognition and draws a green box around a detected face.
 import cv2
 import sys
 
+# The argument this script takes is a haarcascade.xml file which contains face parameters to be recognized.
 cascPath = sys.argv[1]
 faceCascade = cv2.CascadeClassifier(cascPath)
 
+# Start the capture
 video_capture = cv2.VideoCapture(0)
 
 count = 10
@@ -12,6 +15,7 @@ while True:
     # Capture frame-by-frame
     ret, frame = video_capture.read()
     if not ret: continue
+    # Analyze 1 out of 40 frames
     if(count % 40 == 0):
       gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
