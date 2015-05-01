@@ -1,0 +1,10 @@
+#! /bin/bash
+
+myip="142.214.223.174"
+port="554"
+
+gst-launch-1.0 \
+-v v4l2src !\
+"image/jpeg,width=1280,height=720,framerate=30/1" !\
+multipartmux !\
+tcpserversink host=$myip port=$port sync=false
