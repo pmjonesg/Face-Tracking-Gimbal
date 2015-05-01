@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# The purpose of this script is to start a TCP stream over a network.
+# The ip used is the current one for the raspberry.
 myip="142.214.223.174"
 port="554"
 
